@@ -34,6 +34,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Todoy" id="MvB-8k-Znv">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="gPo-vs-KM2">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="todoyAddPressed:" destination="aiL-DK-do0" id="pc2-F2-DVs"/>
                             </connections>
@@ -47,7 +48,6 @@
         <!--Navigation Controller-->
         <scene sceneID="IUb-pC-X1N">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="G8H-zh-RnM" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="L0x-oV-Ymv" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ShP-8M-DFQ">
@@ -63,6 +63,7 @@
                         <segue destination="aiL-DK-do0" kind="relationship" relationship="rootViewController" id="l2b-ZL-PMM"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G8H-zh-RnM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="791" y="186"/>
         </scene>

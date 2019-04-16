@@ -17,6 +17,9 @@ class TodoyViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
 
+    
+    // Table View easy peasy stuff
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell : UITableViewCell = UITableViewCell.init(style: .default, reuseIdentifier: "todoycellitem")
@@ -43,25 +46,25 @@ class TodoyViewController: UITableViewController {
     
   // Mark -- add todoey item
     
-    
+//    
     @IBAction func todoyAddPressed(_ sender: UIBarButtonItem) {
         
-        let alert = UIAlertController.init(title: "Add Todo Item", message: "", preferredStyle: .alert)
-        let action = UIAlertAction.init(title: "add your item", style: .default) { (action) in
+        let alert = UIAlertController(title: "Add Todo Item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "add your item", style: .default) { (action) in
             print("success!")
         }
-        alert.addAction(action)
+      alert.addAction(action)
         
-        alert.addTextField { (addItemTextField) in
-            addItemTextField.placeholder="Type your item"
+        alert.addTextField {(ItemTextField) in
+            ItemTextField.placeholder="Type your item"
         }
-        
+
        
         
-        present(alert, animated: true) {
-            
-        }
-    }
+        present(alert, animated: true, completion: nil)
+        
+   }
+    
     
     
 }
