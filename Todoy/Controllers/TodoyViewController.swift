@@ -7,33 +7,19 @@
 //
 
 import UIKit
-
+import CoreData
 class TodoyViewController: UITableViewController {
 
     var todoArray = [Item]()
     var userDefault = UserDefaults.standard
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let newItem = Item()
-        newItem.title = "Make lock screen wallpapers android app"
-        todoArray.append(newItem)
         
-        let newItem2 = Item()
-        newItem2.title = "Make 3 T-shirts on Amazon"
-        todoArray.append(newItem2)
-        
-        let newItem3 = Item()
-        newItem3.title = "Learn Ios Developement"
-        todoArray.append(newItem3)
-         
-        
-        
-        if  let items : [Item] = userDefault.array(forKey: "toDoListArray") as? [Item]{
-
-            todoArray = items
-
-        }
+    
+       loadData()
         
     }
 
@@ -69,11 +55,16 @@ class TodoyViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
+       context.delete(todoArray[indexPath.row])
+        todoArray.remove(at:indexPath.row)
+
         tableView.deselectRow(at: indexPath, animated: true)
         
-        todoArray[indexPath.row].done = !todoArray[indexPath.row].done
+     //   todoArray[indexPath.row].done = !todoArray[indexPath.row].done
         
-        tableView.reloadData()
+        
+        saveData()
+
         
         }
     
@@ -86,13 +77,13 @@ class TodoyViewController: UITableViewController {
         let alert = UIAlertController(title: "Add Todo Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "add your item", style: .default) { (action) in
             print(textField.text!)
-            let newItem = Item()
+      
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.done = false
           self.todoArray.append(newItem)
-            self.userDefault.set(self.todoArray, forKey: "toDoyarray")
-            
-           self.tableView.reloadData()
-        
+            self.saveData()
+       
             
             
         }
@@ -111,7 +102,61 @@ class TodoyViewController: UITableViewController {
         
    }
     
+    func saveData(){
+        
+      
+        do {
+            try context.save()
+            
+        }
+        catch {
+            print("error while saving data\(error)")
+        }
+        
+        
+        tableView.reloadData()
+        
+    }
+    
+    func loadData(with request:NSFetchRequest<Item>=Item.fetchRequest()){
+        
+       // let request : NSFetchRequest<Item> = Item.fetchRequest()
+        
+        do{ todoArray = try context.fetch(request)
+        }
+        catch {
+            
+            print("error while fetching Data\(error)")
+        }
+        
+       tableView.reloadData()
+    }
+    
+   
     
     
 }
 
+extension   TodoyViewController : UISearchBarDelegate {
+    
+
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor.init(key: "title", ascending: true)]
+        
+       loadData(with: request)
+        
+        
+        
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+    loadData()
+}
+}
